@@ -1,11 +1,20 @@
 import { useState } from "react";
 import BootScreen from "@/components/BootScreen";
+import LoginScreen from "@/components/LoginScreen";
 import MainDesktop from "@/components/MainDesktop";
 
-const Index = () => {
-  const [booted, setBooted] = useState(false);
+type Phase = "boot" | "login" | "desktop";
 
-  return booted ? <MainDesktop /> : <BootScreen onComplete={() => setBooted(true)} />;
+const Index = () => {
+  const [phase, setPhase] = useState<Phase>("boot");
+
+  return (
+    <>
+      {phase === "boot" && <BootScreen onComplete={() => setPhase("login")} />}
+      {phase === "login" && <LoginScreen onLogin={() => setPhase("desktop")} />}
+      {phase === "desktop" && <MainDesktop />}
+    </>
+  );
 };
 
 export default Index;
