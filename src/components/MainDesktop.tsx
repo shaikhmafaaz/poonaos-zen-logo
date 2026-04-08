@@ -12,6 +12,8 @@ import CalculatorWindow from "./windows/CalculatorWindow";
 import CalendarWindow from "./windows/CalendarWindow";
 import LibraryWindow from "./windows/LibraryWindow";
 import ResultsWindow from "./windows/ResultsWindow";
+import desktopWallpaper from "@/assets/desktop-wallpaper.jpg";
+import mainLogo from "@/assets/college-main-logo.png";
 
 const windowComponents: Record<string, React.ComponentType> = {
   files: FilesWindow,
@@ -32,7 +34,6 @@ const MainDesktop = () => {
 
   const handleAppClick = useCallback((id: string) => {
     if (openWindows.includes(id)) {
-      // Bring to front
       setWindowOrder(prev => [...prev.filter(w => w !== id), id]);
     } else {
       setOpenWindows(prev => [...prev, id]);
@@ -50,21 +51,26 @@ const MainDesktop = () => {
   }, []);
 
   return (
-    <div className="fixed inset-0 bg-background flex flex-col animate-fade-up overflow-hidden">
+    <div className="fixed inset-0 flex flex-col animate-fade-up overflow-hidden">
+      {/* Desktop wallpaper */}
+      <img src={desktopWallpaper} alt="" className="absolute inset-0 w-full h-full object-cover" />
+      <div className="absolute inset-0 bg-black/10" />
+      
       <TopPanel />
       <div className="flex-1 flex relative">
         <Dock openWindows={openWindows} onAppClick={handleAppClick} />
         {/* Desktop area */}
         <div className="flex-1 relative">
-          {/* Background glow */}
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-forest/15 blur-[150px] animate-glow-pulse" />
-          </div>
-
-          {/* Desktop watermark */}
+          {/* Desktop watermark when no windows */}
           {openWindows.length === 0 && (
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <p className="text-sm text-muted-foreground/20 tracking-[0.3em] uppercase">AKIS Poona College OS</p>
+            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none gap-4">
+              <div className="relative">
+                <div className="absolute -inset-8 rounded-full bg-gold/5 blur-[60px]" />
+                <img src={mainLogo} alt="" className="w-20 h-20 object-contain opacity-15 relative" />
+              </div>
+              <p className="text-xs text-foreground/10 tracking-[0.4em] uppercase font-light">
+                AKIS Poona College OS
+              </p>
             </div>
           )}
 
