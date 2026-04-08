@@ -17,29 +17,38 @@ const AppWindow = ({ appId, zIndex, onClose, onFocus, children }: AppWindowProps
 
   return (
     <div
-      className={`absolute flex flex-col bg-card/95 backdrop-blur-xl border border-border shadow-2xl transition-all duration-200 ${
+      className={`absolute flex flex-col bg-card/90 backdrop-blur-2xl border border-foreground/8 transition-all duration-300 ease-out overflow-hidden ${
         isMaximized 
-          ? 'inset-0 rounded-none' 
-          : 'top-8 left-16 right-4 bottom-8 rounded-xl'
+          ? 'inset-0 rounded-none shadow-none' 
+          : 'top-6 left-14 right-3 bottom-6 rounded-xl shadow-[0_25px_80px_rgba(0,0,0,0.5),0_0_1px_rgba(255,255,255,0.1)]'
       }`}
       style={{ zIndex }}
       onClick={onFocus}
     >
       {/* Title bar */}
-      <div className="flex items-center justify-between h-9 px-3 border-b border-border/50 shrink-0 cursor-default select-none">
-        <div className="flex items-center gap-2">
-          {Icon && <Icon className="w-3.5 h-3.5 text-gold" />}
-          <span className="text-xs font-medium text-foreground">{app?.label || appId}</span>
+      <div className="flex items-center justify-between h-10 px-3 border-b border-foreground/5 shrink-0 cursor-default select-none bg-foreground/[0.02]">
+        <div className="flex items-center gap-2.5">
+          {Icon && <Icon className="w-3.5 h-3.5 text-gold/80" />}
+          <span className="text-xs font-medium text-foreground/80 tracking-wide">{app?.label || appId}</span>
         </div>
-        <div className="flex items-center gap-1">
-          <button className="w-5 h-5 rounded-full flex items-center justify-center hover:bg-foreground/10 transition-colors" onClick={(e) => { e.stopPropagation(); }}>
-            <Minus className="w-3 h-3 text-muted-foreground" />
+        <div className="flex items-center gap-1.5">
+          <button 
+            className="w-3 h-3 rounded-full bg-gold/60 hover:bg-gold flex items-center justify-center transition-all duration-200 group" 
+            onClick={(e) => { e.stopPropagation(); }}
+          >
+            <Minus className="w-2 h-2 text-background opacity-0 group-hover:opacity-100 transition-opacity" />
           </button>
-          <button className="w-5 h-5 rounded-full flex items-center justify-center hover:bg-foreground/10 transition-colors" onClick={(e) => { e.stopPropagation(); setIsMaximized(!isMaximized); }}>
-            <Maximize2 className="w-3 h-3 text-muted-foreground" />
+          <button 
+            className="w-3 h-3 rounded-full bg-forest hover:bg-accent flex items-center justify-center transition-all duration-200 group" 
+            onClick={(e) => { e.stopPropagation(); setIsMaximized(!isMaximized); }}
+          >
+            <Maximize2 className="w-1.5 h-1.5 text-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
           </button>
-          <button className="w-5 h-5 rounded-full flex items-center justify-center hover:bg-destructive/20 transition-colors" onClick={(e) => { e.stopPropagation(); onClose(); }}>
-            <X className="w-3 h-3 text-destructive" />
+          <button 
+            className="w-3 h-3 rounded-full bg-destructive/60 hover:bg-destructive flex items-center justify-center transition-all duration-200 group" 
+            onClick={(e) => { e.stopPropagation(); onClose(); }}
+          >
+            <X className="w-2 h-2 text-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
           </button>
         </div>
       </div>
