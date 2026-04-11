@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { Wifi, Volume2, Battery, ChevronDown, Search, Bell, Power, Settings, User, BatteryCharging, Lock } from "lucide-react";
+import { Wifi, Volume2, Battery, ChevronDown, Search, BatteryCharging, Settings, Power, Moon, Sun, Bluetooth, Globe } from "lucide-react";
 import mainLogo from "@/assets/college-main-logo.png";
 
 const TopPanel = () => {
   const [time, setTime] = useState(new Date());
-  const [showSystemMenu, setShowSystemMenu] = useState(false);
+  const [showControlCenter, setShowControlCenter] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);
@@ -15,96 +15,117 @@ const TopPanel = () => {
   const dateString = time.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' });
 
   return (
-    <div className="h-7 bg-background/80 backdrop-blur-2xl border-b border-border/50 flex items-center justify-between px-3 text-[11px] text-foreground select-none z-50 relative">
-      {/* Left */}
+    <div className="h-[26px] bg-background/40 backdrop-blur-2xl flex items-center justify-between px-4 text-[13px] text-foreground/90 select-none z-50 relative">
+      {/* Left - Apple menu style */}
+      <div className="flex items-center gap-4">
+        <button className="flex items-center gap-1.5 px-1 hover:bg-foreground/5 rounded py-0.5 transition-colors">
+          <img src={mainLogo} alt="" className="w-[14px] h-[14px]" />
+        </button>
+        <span className="text-[13px] font-semibold text-foreground/90">Finder</span>
+        <div className="flex items-center gap-3 text-[13px] text-foreground/60">
+          <button className="hover:text-foreground/90 transition-colors">File</button>
+          <button className="hover:text-foreground/90 transition-colors">Edit</button>
+          <button className="hover:text-foreground/90 transition-colors">View</button>
+          <button className="hover:text-foreground/90 transition-colors">Go</button>
+          <button className="hover:text-foreground/90 transition-colors">Help</button>
+        </div>
+      </div>
+
+      {/* Right - Status icons */}
       <div className="flex items-center gap-2">
-        <div className="flex items-center gap-2 px-2 py-0.5 rounded-md hover:bg-secondary cursor-pointer transition-colors duration-200 group">
-          <img src={mainLogo} alt="" className="w-3.5 h-3.5 rounded-sm" />
-          <span className="font-medium text-primary/90 text-[11px] tracking-wide">Activities</span>
-        </div>
-      </div>
-
-      {/* Center */}
-      <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-1.5 px-2.5 py-0.5 rounded-md hover:bg-secondary cursor-pointer transition-colors duration-200">
-        <span className="text-foreground/70 font-medium">{dateString}</span>
-        <span className="text-foreground/20 mx-0.5">·</span>
-        <span className="text-foreground/90 font-medium tabular-nums">{timeString}</span>
-      </div>
-
-      {/* Right */}
-      <div className="flex items-center gap-0.5">
-        <button className="p-1 rounded-md hover:bg-secondary transition-colors duration-200">
-          <Search className="w-3.5 h-3.5 text-foreground/50" />
-        </button>
-        <button className="p-1 rounded-md hover:bg-secondary transition-colors duration-200 relative">
-          <Bell className="w-3.5 h-3.5 text-foreground/50" />
-          <div className="absolute top-0.5 right-0.5 w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_4px_hsl(175,70%,50%,0.5)]" />
-        </button>
+        <Bluetooth className="w-[14px] h-[14px] text-foreground/50" />
+        <Wifi className="w-[14px] h-[14px] text-foreground/60" />
+        <Search className="w-[14px] h-[14px] text-foreground/50" />
         <div
-          className="flex items-center gap-1 px-1.5 py-0.5 rounded-md hover:bg-secondary cursor-pointer transition-colors duration-200 relative"
-          onClick={() => setShowSystemMenu(!showSystemMenu)}
+          className="flex items-center gap-2 px-1.5 py-0.5 rounded hover:bg-foreground/5 cursor-pointer transition-colors"
+          onClick={() => setShowControlCenter(!showControlCenter)}
         >
-          <Wifi className="w-3.5 h-3.5 text-foreground/60" />
-          <Volume2 className="w-3.5 h-3.5 text-foreground/60" />
-          <BatteryCharging className="w-3.5 h-3.5 text-primary/70" />
-          <ChevronDown className={`w-2.5 h-2.5 text-foreground/40 transition-transform duration-200 ${showSystemMenu ? 'rotate-180' : ''}`} />
+          <Volume2 className="w-[14px] h-[14px] text-foreground/60" />
+          <BatteryCharging className="w-[16px] h-[14px] text-foreground/60" />
         </div>
+        <span className="text-[13px] text-foreground/70 tabular-nums ml-1">{dateString} {timeString}</span>
 
-        {showSystemMenu && (
+        {showControlCenter && (
           <>
-            <div className="fixed inset-0 z-40" onClick={() => setShowSystemMenu(false)} />
-            <div className="absolute top-7 right-1 w-80 bg-card/95 backdrop-blur-2xl border border-border rounded-xl shadow-[0_20px_80px_rgba(0,0,0,0.6)] z-50 p-3 space-y-2 animate-fade-up" style={{ animationDuration: '0.15s' }}>
-              {/* Quick toggles */}
-              <div className="grid grid-cols-3 gap-2">
-                {[
-                  { icon: Wifi, label: "Wi-Fi", active: true },
-                  { icon: Volume2, label: "Sound", active: true },
-                  { icon: Lock, label: "VPN", active: false },
-                ].map(({ icon: Icon, label, active }) => (
-                  <button key={label} className={`flex flex-col items-center gap-1.5 py-3 rounded-xl transition-all duration-200 ${active ? 'bg-primary/10 border border-primary/20' : 'bg-secondary/50 border border-transparent hover:bg-secondary'}`}>
-                    <Icon className={`w-4 h-4 ${active ? 'text-primary' : 'text-foreground/40'}`} />
-                    <span className={`text-[9px] tracking-wide ${active ? 'text-primary/80' : 'text-foreground/40'}`}>{label}</span>
-                  </button>
-                ))}
+            <div className="fixed inset-0 z-40" onClick={() => setShowControlCenter(false)} />
+            <div className="absolute top-[26px] right-2 w-[320px] bg-card/80 backdrop-blur-3xl border border-foreground/8 rounded-2xl shadow-[0_30px_100px_rgba(0,0,0,0.5),0_0_0_0.5px_rgba(255,255,255,0.05)] z-50 p-3 animate-[slide-up-fade_0.15s_ease-out]">
+              {/* Grid toggles */}
+              <div className="grid grid-cols-2 gap-2 mb-3">
+                <div className="bg-foreground/5 rounded-xl p-3 space-y-2">
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center">
+                      <Wifi className="w-3.5 h-3.5 text-primary-foreground" />
+                    </div>
+                    <div>
+                      <p className="text-[11px] font-medium text-foreground/90">Wi-Fi</p>
+                      <p className="text-[9px] text-foreground/40">AKIS-Campus</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-foreground/5 rounded-xl p-3 space-y-2">
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center">
+                      <Bluetooth className="w-3.5 h-3.5 text-primary-foreground" />
+                    </div>
+                    <div>
+                      <p className="text-[11px] font-medium text-foreground/90">Bluetooth</p>
+                      <p className="text-[9px] text-foreground/40">On</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-foreground/5 rounded-xl p-3 space-y-2">
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-7 rounded-full bg-accent flex items-center justify-center">
+                      <Globe className="w-3.5 h-3.5 text-accent-foreground" />
+                    </div>
+                    <div>
+                      <p className="text-[11px] font-medium text-foreground/90">AirDrop</p>
+                      <p className="text-[9px] text-foreground/40">Everyone</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-foreground/5 rounded-xl p-3 space-y-2">
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-7 rounded-full bg-foreground/10 flex items-center justify-center">
+                      <Moon className="w-3.5 h-3.5 text-foreground/60" />
+                    </div>
+                    <div>
+                      <p className="text-[11px] font-medium text-foreground/90">Focus</p>
+                      <p className="text-[9px] text-foreground/40">Off</p>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              {/* Sliders */}
-              <div className="space-y-3 pt-1">
-                <div className="flex items-center gap-3 px-2">
-                  <Volume2 className="w-3.5 h-3.5 text-foreground/40 shrink-0" />
-                  <div className="flex-1 h-1.5 rounded-full bg-secondary overflow-hidden">
-                    <div className="w-3/4 h-full rounded-full bg-gradient-to-r from-primary/70 to-primary shadow-[0_0_8px_hsl(175,70%,50%,0.3)]" />
+              {/* Display slider */}
+              <div className="bg-foreground/5 rounded-xl p-3 mb-2">
+                <div className="flex items-center gap-3">
+                  <Sun className="w-3 h-3 text-foreground/30" />
+                  <div className="flex-1 h-1 rounded-full bg-foreground/10 overflow-hidden">
+                    <div className="w-2/3 h-full rounded-full bg-foreground/60" />
                   </div>
+                  <Sun className="w-4 h-4 text-foreground/50" />
                 </div>
-                <div className="flex items-center gap-3 px-2">
-                  <span className="text-[9px] text-foreground/30 w-3.5 text-center">☀</span>
-                  <div className="flex-1 h-1.5 rounded-full bg-secondary overflow-hidden">
-                    <div className="w-2/3 h-full rounded-full bg-gradient-to-r from-gold/60 to-gold shadow-[0_0_8px_hsl(43,72%,55%,0.3)]" />
+              </div>
+
+              {/* Sound slider */}
+              <div className="bg-foreground/5 rounded-xl p-3 mb-2">
+                <div className="flex items-center gap-3">
+                  <Volume2 className="w-3.5 h-3.5 text-foreground/30" />
+                  <div className="flex-1 h-1 rounded-full bg-foreground/10 overflow-hidden">
+                    <div className="w-3/4 h-full rounded-full bg-foreground/60" />
                   </div>
                 </div>
               </div>
-              
-              <div className="border-t border-border my-1" />
-              
-              {[
-                { icon: Wifi, label: "Wi-Fi", detail: "AKIS-Campus" },
-                { icon: BatteryCharging, label: "Battery", detail: "85% · Charging" },
-                { icon: Settings, label: "Settings" },
-                { icon: User, label: "Student" },
-              ].map(({ icon: Icon, label, detail }) => (
-                <button key={label} className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-secondary transition-colors text-left group">
-                  <Icon className="w-4 h-4 text-foreground/40 group-hover:text-foreground/60 transition-colors" />
-                  <span className="text-[11px] text-foreground/70 flex-1 group-hover:text-foreground/90 transition-colors">{label}</span>
-                  {detail && <span className="text-[10px] text-muted-foreground/40">{detail}</span>}
-                </button>
-              ))}
-              
-              <div className="border-t border-border my-1" />
-              
-              <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-destructive/10 transition-colors group">
-                <Power className="w-4 h-4 text-destructive/50 group-hover:text-destructive/80 transition-colors" />
-                <span className="text-[11px] text-destructive/60 group-hover:text-destructive/80 transition-colors">Power Off / Log Out</span>
-              </button>
+
+              {/* Battery */}
+              <div className="bg-foreground/5 rounded-xl p-3 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <BatteryCharging className="w-4 h-4 text-primary/70" />
+                  <span className="text-[11px] text-foreground/70">Battery</span>
+                </div>
+                <span className="text-[11px] text-foreground/50">85% · Charging</span>
+              </div>
             </div>
           </>
         )}
