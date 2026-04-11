@@ -66,6 +66,12 @@ export default {
           DEFAULT: "hsl(var(--forest))",
           deep: "hsl(var(--forest-deep))",
         },
+        aurora: {
+          cyan: "hsl(var(--aurora-cyan))",
+          purple: "hsl(var(--aurora-purple))",
+          blue: "hsl(var(--aurora-blue))",
+          teal: "hsl(var(--aurora-teal))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
