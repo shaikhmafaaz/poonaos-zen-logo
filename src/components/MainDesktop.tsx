@@ -52,29 +52,30 @@ const MainDesktop = () => {
 
   return (
     <div className="fixed inset-0 flex flex-col animate-fade-up overflow-hidden">
-      {/* Desktop wallpaper */}
       <img src={desktopWallpaper} alt="" className="absolute inset-0 w-full h-full object-cover" />
-      <div className="absolute inset-0 bg-black/10" />
+      <div className="absolute inset-0 bg-background/10" />
       
       <TopPanel />
       <div className="flex-1 flex relative">
         <Dock openWindows={openWindows} onAppClick={handleAppClick} />
-        {/* Desktop area */}
         <div className="flex-1 relative">
-          {/* Desktop watermark when no windows */}
           {openWindows.length === 0 && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none gap-4">
+            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none gap-5">
               <div className="relative">
-                <div className="absolute -inset-8 rounded-full bg-gold/5 blur-[60px]" />
-                <img src={mainLogo} alt="" className="w-20 h-20 object-contain opacity-15 relative" />
+                <div className="absolute -inset-10 rounded-full bg-primary/3 blur-[80px] animate-glow-pulse" />
+                <img src={mainLogo} alt="" className="w-20 h-20 object-contain opacity-10 relative" />
               </div>
-              <p className="text-xs text-foreground/10 tracking-[0.4em] uppercase font-light">
-                AKIS Poona College OS
-              </p>
+              <div className="text-center space-y-1">
+                <p className="text-xs text-foreground/8 tracking-[0.5em] uppercase font-light">
+                  PoonaOS
+                </p>
+                <p className="text-[9px] text-foreground/5 tracking-[0.3em]">
+                  Click an app to get started
+                </p>
+              </div>
             </div>
           )}
 
-          {/* Windows */}
           {openWindows.map(id => {
             const Component = windowComponents[id];
             if (!Component) return null;
